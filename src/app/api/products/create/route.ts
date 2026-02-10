@@ -25,6 +25,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData()
     const setId = formData.get('set_id') as string
+    const titlePrefix = (formData.get('title_prefix') as string) || ''
     const descriptionCustom = (formData.get('description_custom') as string) || ''
     const status = (formData.get('status') as 'draft' | 'active') || 'draft'
     const photos = formData.getAll('photos') as File[]
@@ -130,7 +131,10 @@ export async function POST(request: Request) {
     }
     metafields.push({ namespace: 'custom', key: 'stt_code', value: productCode, type: 'single_line_text_field' })
 
-    const productTitle = `馬年賀年花【${productCode}】`
+    // Build product title with optional prefix
+    const productTitle = titlePrefix 
+      ? `馬年賀年花 ${titlePrefix} 【${productCode}】`
+      : `馬年賀年花【${productCode}】`
 
     const shopifyProduct = await createShopifyProduct({
       title: productTitle,

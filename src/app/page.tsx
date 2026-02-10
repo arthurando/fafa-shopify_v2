@@ -9,6 +9,7 @@ export default function CreateProductPage() {
   const [sets, setSets] = useState<ProductSet[]>([])
   const [selectedSetId, setSelectedSetId] = useState('')
   const [nextCode, setNextCode] = useState('')
+  const [titlePrefix, setTitlePrefix] = useState('')
   const [descriptionCustom, setDescriptionCustom] = useState('')
   const [photos, setPhotos] = useState<File[]>([])
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState<string[]>([])
@@ -100,6 +101,7 @@ export default function CreateProductPage() {
     try {
       const formData = new FormData()
       formData.append('set_id', selectedSetId)
+      formData.append('title_prefix', titlePrefix)
       formData.append('description_custom', descriptionCustom)
       formData.append('status', status)
       photos.forEach((photo) => formData.append('photos', photo))
@@ -114,6 +116,7 @@ export default function CreateProductPage() {
 
       if (json.success) {
         setSuccess(`${nextCode} ${t('create.success')}`)
+        setTitlePrefix('')
         setDescriptionCustom('')
         setPhotos([])
         photoPreviewUrls.forEach((url) => URL.revokeObjectURL(url))
@@ -179,6 +182,25 @@ export default function CreateProductPage() {
           )}
         </div>
       )}
+
+      {/* Title Prefix Input */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Title Prefix <span className="text-gray-400">(Optional)</span>
+        </label>
+        <input
+          type="text"
+          value={titlePrefix}
+          onChange={(e) => setTitlePrefix(e.target.value)}
+          placeholder="e.g. 藏寶圖"
+          className="w-full max-w-full border border-gray-300 rounded-lg px-3 py-3 text-base"
+        />
+        {titlePrefix && nextCode && (
+          <p className="text-sm text-gray-500 mt-1">
+            Preview: 馬年賀年花 {titlePrefix} 【{nextCode}】
+          </p>
+        )}
+      </div>
 
       {/* Photo Upload */}
       <div>
