@@ -1,0 +1,12 @@
+{
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "korea-branch": false
+    }
+  },
+  "github": {
+    "enabled": false
+  }
+}
